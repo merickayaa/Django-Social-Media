@@ -1,0 +1,83 @@
+{% extends 'partials/_base.html' %}
+{% load static %}
+    {% block content %}
+    {% load crispy_forms_tags %}
+
+    <div class="container px-5 py-3">
+        <div class="row">
+            <div class="col-sm-4 navbar-bg-color">
+                <h3 class="li_font pt-3 px-4">Mesajlar</h3>
+                <div class="card navbar-bg-color border-0">
+                  {% for thread in threads.all %}
+                  <!-- <div class="row">
+                    <div class="card col-sm-10 p-5 shadow-sm">
+                      <img width="30px" src="{{thread.receiver.profileimg.url}}" alt="" class="mr-2">
+                      <h5>{{ thread.receiver }}</h5>
+                      <a class="stretched-link" href="{% url 'thread' thread.pk %}"></a>
+                    </div>
+                  </div> -->
+                    <a href="{% url 'thread' thread.pk %}" class="border-bottom border-black">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <span class="card_font" style="font-size: 20px;">{{ thread.user }} ve {{ thread.receiver }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div> <!-- COL-SM-4 END -->
+            <div class="mt-5" style="text-align: center;">
+                <div class="image-container">
+                    <img src="Images/bubble-chat.png" width="200px" class="" alt="">
+                </div>
+                    <button type="button" id="New-Message" class="p-font border-0 btn btn-info" style="font-size: 30px;" data-bs-toggle="modal" data-bs-target="#NewMessageModal">YENİ MESAJ GÖNDER</button>
+            </div> <!-- COL-SM-8 END -->
+        </div> <!-- ROW END -->
+    </div> <!-- CONTAINER END -->
+
+        <!-- NewMessageModal -->
+        <div class="modal fade" id="NewMessageModal" tabindex="-1" aria-labelledby="NewMessageModalLabel" aria-hidden="true">
+          <form method="POST">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                
+                  {% csrf_token %}
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="NewMessageModalLabel">Kullanıcı Adı İle Arayın</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="input-group flex-nowrap">
+                      {{form}}
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-primary">Mesaj Gönder</button>
+                  </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+
+  <script src="https://kit.fontawesome.com/03397e9a7e.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script>
+    let liDOM = document.querySelectorAll('li')
+    liDOM.forEach(function(s){
+      s.addEventListener('mouseover', function(){
+        s.classList.add('bg-primary')
+      })
+    })
+    liDOM.forEach(function(s){
+      s.addEventListener('mouseout', function(){
+        s.classList.remove('bg-primary')
+      })
+    })
+  </script>
+  </body>
+</html>
+{% endblock %}
