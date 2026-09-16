@@ -1,11 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from datetime import datetime
 import uuid
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from django.template.defaultfilters import slugify
-
+from django.utils import timezone
 
 
 # Create your models here.
@@ -63,7 +62,7 @@ class Comment(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comments',null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     text = models.TextField(default='')
-    created_at = models.DateTimeField(default=datetime.now)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.user.username} - {self.text[:20]}"
@@ -75,7 +74,7 @@ class Post(models.Model):
     # user_id = models.IntegerField()
     image=models.ImageField(upload_to='post_images', null=True)
     caption= models.TextField()
-    created_at = models.DateTimeField(default=datetime.now)
+    created_at = models.DateTimeField(default=timezone.now)
     no_of_likes = models.IntegerField(default=0)
     def __str__(self):
         return self.user.username

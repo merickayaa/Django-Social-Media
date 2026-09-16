@@ -1,6 +1,6 @@
 from django.db import models
 from main.models import User
-from datetime import datetime
+from django.utils import timezone
 # Create your models here.
 
 class Thread(models.Model):
@@ -13,5 +13,5 @@ class Message(models.Model):
     receiver_user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='+')
     body = models.CharField(max_length=100)
     image = models.ImageField(upload_to='messages_photos', blank=True,null=True)
-    date = models.DateTimeField(default=datetime.now)
+    date = models.DateTimeField(default=timezone.now)
     is_read = models.BooleanField(default=False)

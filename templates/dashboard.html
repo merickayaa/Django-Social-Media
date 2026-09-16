@@ -19,70 +19,57 @@
           <div id="Personal">
             <div class="card navbar-bg-color rounded-0 border-0" style="text-transform: capitalize;">
               <div class="card-header navbar-bg-color p-4">
-                <div class="row">
-                  <div  class="col-sm-4">
-                    <button id="user"><img src="{{user_profile.profileimg.url}}" width="100px" class="rounded-circle border"
+                <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-center gap-3">
+                  <!-- sol üst: fotoğraf + isim -->
+                  <div class="d-flex align-items-center gap-3" style="min-width:0; flex:1 1 auto;">
+                    <button id="user" class="flex-shrink-0"><img src="{{user_profile.profileimg.url}}" width="100px" class="rounded-circle border"
                       alt="..."></button>
-                      <h3 class="card-title li_font">{{user_profile.first_name}} {{user_profile.last_name}}</h3>
+                    <h3 class="card-title li_font text-break mb-0" style="min-width:0;">{{user_profile.first_name}} {{user_profile.last_name}}</h3>
                   </div>
-                  <div  class="col-sm-8">
-                    <ul class="list-group float-end navbar-bg-color border-0 rounded-0 text-center">
-                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0"><b style="font-size: large;">Takipçi Sayısı</b></li>
-                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0"><b style="font-size: large;">{{followerCount}}</b></li>
+                  <!-- sağ üst: takipçi bilgileri -->
+                  <div class="d-flex flex-wrap justify-content-end align-items-center gap-2" style="min-width:0;">
+                    <ul class="list-group navbar-bg-color border-0 rounded-0 text-center mb-0" style="width:100px;">
+                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0 p-1"><b style="font-size: large;">Takipçi Sayısı</b></li>
+                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0 p-1"><b style="font-size: large;">{{followerCount}}</b></li>
                     </ul>
-                    <ul class="list-group float-end navbar-bg-color border-0 rounded-0 text-center">
-                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0"><b style="font-size: large;">Post Sayısı</b></li>
-                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0"><b style="font-size: large;">{{postCount}}</b></li>
+                    <ul class="list-group navbar-bg-color border-0 rounded-0 text-center mb-0" style="width:100px;">
+                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0 p-1"><b style="font-size: large;">Post Sayısı</b></li>
+                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0 p-1"><b style="font-size: large;">{{postCount}}</b></li>
                     </ul>
-                    <ul class="list-group float-end navbar-bg-color border-0 rounded-0 text-center">
-                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0"><b style="font-size: large;">Takip Edilen Sayısı</b></li>
-                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0"><b style="font-size: large;">{{followingCount}}</b></li>
+                    <ul class="list-group navbar-bg-color border-0 rounded-0 text-center mb-0" style="width:100px;">
+                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0 p-1"><b style="font-size: large;">Takip Edilen Sayısı</b></li>
+                      <li class="list-group-item disabled navbar-bg-color border-0 rounded-0 p-1"><b style="font-size: large;">{{followingCount}}</b></li>
                     </ul>
-                    <div class="float-end">
+                    <div>
                       {% if user_profile == request.user %}
                       <button type="button" class="rounded-circle" id="myBtn">
                         <i class="fa-solid fa-pen fa-lg py-3 px-2"></i>
                       </button>
                       {% else %}
-                      <form action="/follow" method="POST">
+                      <form action="/follow" method="POST" class="mb-0">
                         {% csrf_token %}
                         <input type="hidden" value="{{user_profile.id}}" name="user" />
                         <input type="hidden" value="{{request.user.id}}" name="follower" />
                         <button type="submit" class="rounded-circle p-2">
                           <b class="px-2">{{button_text}}</b>
-                          <i class="fa-solid fa-user-plus float-end py-1"></i>
+                          <i class="fa-solid fa-user-plus py-1"></i>
                         </button>
                       </form>
                       {% endif %}
                     </div>
                   </div>
-                  <div class="col-sm-12">
-                    {% if user_profile.job and user_profile.college %}
-                      <p class="p-font">{{ user_profile.job}}<!--Bilgisayar Programcısı --></p>
-                      <button class="float-end p-2 mt-3 btn navbar-bg-color d-flex align-items-center" type="button">
-                        <img src="{% static 'Images/universite_logo.png' %}" width="50px" alt="">
-                        <span class="li_font p-2" style="font-size: 20px;">
-                          {{user_profile.college}}<!--Edremit Meslek YüksekOkulu --></span>
-                      </button>
-                      {% elif user_profile.job %}
-                      <p class="p-font">{{ user_profile.job}}<!--Bilgisayar Programcısı --></p>
-                      <button class="float-end p-2 mt-3 btn navbar-bg-color d-flex align-items-center" type="button">
-                        <img src="{% static 'Images/universite_logo.png' %}" width="50px" alt="">
-                      </button>
-                      {% elif user_profile.college %}
-                      <button class="float-end p-2 mt-3 btn navbar-bg-color d-flex align-items-center" type="button">
-                        <img src="{% static 'Images/universite_logo.png' %}" width="50px" alt="">
-                        <span class="li_font p-2" style="font-size: 20px;">
-                          {{user_profile.college}}<!--Edremit Meslek YüksekOkulu --></span>
-                      </button>
-                      {% else %}
-                      <p class="p-font"><!--Bilgisayar Programcısı --></p>
-                      <button class="float-end p-2 mt-3 btn navbar-bg-color d-flex align-items-center" type="button">
-                        <img src="{% static 'Images/universite_logo.png' %}" width="50px" alt="">
-                      </button>
-                      {% endif %}
-                  </div>
-                </div>   
+                </div>
+                <div class="d-flex flex-wrap justify-content-between align-items-center mt-3 gap-2">
+                  <!-- sol alt: meslek -->
+                  <p class="p-font mb-0">{{ user_profile.job }}</p>
+                  <!-- sağ alt: okul -->
+                  <button class="btn navbar-bg-color d-flex align-items-center gap-2" type="button">
+                    <img src="{% static 'Images/universite_logo.png' %}" width="50px" alt="">
+                    {% if user_profile.college %}
+                    <span class="li_font" style="font-size: 20px;">{{ user_profile.college }}</span>
+                    {% endif %}
+                  </button>
+                </div>
               </div>
               {% if user_profile.job and user_profile.company_name and user_profile.type_of_work %}
               <div class="card-body">
@@ -321,8 +308,10 @@
     // Get the <span> element that closes the modal
     var span = document.getElementById("close")
     var top_close = document.getElementById("top_close")
-    btn.onclick = function() {
+    if (btn){
+      btn.onclick = function() {
         modal.style.display = "block";
+      }
     }
     span.onclick = function() {
         modal.style.display = "none";
