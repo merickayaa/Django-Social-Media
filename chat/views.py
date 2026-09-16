@@ -1,33 +1,26 @@
-from django.shortcuts import render, redirect,get_object_or_404
-from django.http import HttpResponse
-from django.contrib.auth import authenticate,login, logout
-from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.views import View
-from django.views.generic.edit import UpdateView,DeleteView
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
-from datetime import datetime
-from itertools import chain
 from .models import Message,Thread
-from main.models import User
-import random
 from .forms import ThreadForm,MessageForm
-from main.models import Comment,User,Follower,Post
+from main.models import User,Follower
 # Create your views here.
 class ListThread(View):
     def get(self, request, *args, **kwargs):
         user_object = User.objects.get(username = request.user.username)
         threads = Thread.objects.filter(Q(user=request.user) | Q(receiver=request.user))
+        user_following = Follower.objects.filter(follower=request.user)
         form =ThreadForm()
         context = {
             'threads':threads,
             'form':form,
-            'user_profile':user_object
+            'user_profile':user_object,
+            'user_following': user_following,
         }
         return render(request, 'messages.html', context)
     def post(self, request, *args, **kwargs):
         form = ThreadForm(request.POST)
-
         if form.is_valid():
             username = form.cleaned_data.get('username')
             try:

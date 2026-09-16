@@ -84,6 +84,32 @@ def comment(request):
         # Başarılı bir yanıt gönder
         return redirect(request.META.get('HTTP_REFERER'))
 
+@login_required(login_url='signin')
+def deleteComment(request):
+    if request.method == 'POST':
+        comment_id = request.POST['comment_idfordelete']
+        comment = get_object_or_404(Comment, id=comment_id, user=request.user)
+        try:
+            comment.delete()
+            messages.success(request, "Yorum Başarıyla Silinmiştir.")
+        except Exception as e:
+            messages.error(request, f'Yorum silinirken bir hata oluştu: {str(e)}')
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required(login_url='signin')
+def editComment(request):
+    if request.method == 'POST':
+        comment_id = request.POST['comment_id']
+        new_comment = request.POST['comment']
+        comment = get_object_or_404(Comment, id=comment_id, user=request.user)
+        try:
+            comment.text = new_comment
+            comment.save()
+            messages.success(request, "Yorumunuz Başarıyla Güncellenmiştir.")
+        except Exception as e:
+            messages.error(request, f'Yorum güncellenirken bir hata oluştu: {str(e)}')
+    return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url='signin')
 def search(request):
@@ -335,7 +361,7 @@ def posts(request,user_slug):
     #     post.liker_ids = [like.user_id for like in post.likes.all()]
     posts = Post.objects.filter(user=profile).select_related('user').annotate(
     liker_ids_str=GroupConcat('likes__user')
-)
+).prefetch_related(Prefetch("comments", Comment.objects.select_related("user")))
     for post in posts:
         post.liker_ids = [int(x) for x in post.liker_ids_str.split(',')] if post.liker_ids_str else []
 
@@ -374,21 +400,10 @@ def posts(request,user_slug):
         username_profile_list.append(profile_lists)
 
     suggestions_username_profile_list = list(chain(*username_profile_list))
-    comment = []
-    comment_list = []
-    for post in feed_list:
-        comment.append(post.id)
-    
-    for ids in comment:
-        comment_lists = Comment.objects.filter(post__id=ids)
-        comment_list.append(comment_lists)
-
-    comment_post_list = list(chain(*comment_list))
     context = {
         'user_profile':profile,
         'posts':posts,
         'suggestions_username_profile_list':suggestions_username_profile_list,
-        'comment_post_list':comment_post_list,
     }
     return render(request,'posts.html', context)
 
@@ -505,7 +520,7 @@ def editpassword(request):
             new_password = request.POST['password']
             confirm_password = request.POST['password2']
 
-            if new_password == confirm_password:
+            if new_password == confirm_password and old_password != new_password:
                 # Kullanıcının şifresini güncelleyin
                 user.set_password(new_password)
                 user.save()
@@ -515,8 +530,10 @@ def editpassword(request):
 
                 messages.success(request, 'Şifre başarıyla güncellendi.')
                 return redirect('signin')
-            else:
+            elif new_password != confirm_password:
                 messages.error(request, 'Şifreleriniz aynı değil.')
+            else:
+                messages.error(request, 'Eski şifreniz ile yeni şifreniz aynı olamaz.')
         else:
             messages.error(request, 'Eski şifreniz girdiğiniz şifre ile uyuşmamaktadır.')
 

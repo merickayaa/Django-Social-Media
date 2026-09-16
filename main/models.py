@@ -12,8 +12,8 @@ from django.template.defaultfilters import slugify
 class User(AbstractUser):
     student_no = models.CharField(max_length=12, unique=True, help_text="4,5 ve 6. rakamlar 214 veya 114 olmalıdır", null=True)   
     profileimg = models.ImageField(upload_to='profile_images', default='user.png')
-    job = models.CharField(max_length=30, blank=True, null=True)
-    company_name = models.CharField(max_length=30, blank=True, null=True)
+    job = models.CharField(max_length=30, blank=True)
+    company_name = models.CharField(max_length=30, blank=True)
     TYPE_OF_WORK_OPTIONS = [
         ('uzaktan', 'Uzaktan'),
         ('ofisten', 'Ofisten'),
@@ -43,7 +43,7 @@ class User(AbstractUser):
     country = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=100, blank=True)
     phone_number = models.CharField(max_length=15, blank=True)
-    birthday = models.DateField(max_length=10, null=True, blank=True)
+    birthday = models.DateField(max_length=10, blank=True)
     slug = models.SlugField(max_length=50, unique=True, null=True)
 
     def __str__(self):
