@@ -258,7 +258,7 @@
                 <div class="mb-3">
                   <label class="form-label li_font">Doğum Günü</label>
                   <div class="d-flex">
-                    <input name="birthday" value="{{user_profile.birthday}}" type="text" class="form-control" id="birthdayInput" placeholder="DD-MM-YYYY">
+                    <input name="birthday" value="{{user_profile.birthday|date:'d-m-Y'}}" type="text" class="form-control" id="birthdayInput" placeholder="DD-MM-YYYY">
                   </div>
                 </div>
               </div>

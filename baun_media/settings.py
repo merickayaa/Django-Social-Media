@@ -25,9 +25,9 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('IS_DEV', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.environ['APP_HOST']]
 
 
 # Application definition
@@ -81,12 +81,34 @@ WSGI_APPLICATION = 'baun_media.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'baun_media',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
-        conn_max_age=600,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'baun_media',
+        'USER': os.environ["DB_USER"],
+        'PASSWORD': os.environ["DB_PASSWORD"],
+        'HOST': 'django-project-db.cfsyoaks0gdj.eu-north-1.rds.amazonaws.com',
+        'PORT': '3306',
+    }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+#         conn_max_age=600,
+#     )
+# }
 
 
 # Password validation
