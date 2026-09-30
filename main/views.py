@@ -271,7 +271,7 @@ def dashboard(request, user_slug):
                 birthday_date = datetime.strptime(birthday, '%d-%m-%Y').date()
                 profile.birthday = birthday_date
             except ValueError:
-                messages.info(request, "Geçerli Bir Tarih Giriniz!")
+                messages.info(request, "Doğum Gününüz İçin Geçerli Bir Tarih Giriniz!")
 
             profile.profileimg = image
             profile.job = job
@@ -296,7 +296,7 @@ def dashboard(request, user_slug):
                 birthday_date = datetime.strptime(birthday, '%d-%m-%Y').date()
                 profile.birthday = birthday_date
             except ValueError:
-                messages.info(request, "Geçerli Bir Tarih Giriniz!")
+                messages.info(request, "Doğum Gününüz İçin Geçerli Bir Tarih Giriniz!")
 
             profile.profileimg = image
             profile.job = job

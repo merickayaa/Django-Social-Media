@@ -42,7 +42,7 @@ class User(AbstractUser):
     country = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=100, blank=True)
     phone_number = models.CharField(max_length=15, blank=True)
-    birthday = models.DateField(max_length=10, blank=True)
+    birthday = models.DateField(max_length=10, blank=True, null=True)
     slug = models.SlugField(max_length=50, unique=True, null=True)
 
     def __str__(self):
