@@ -4,6 +4,18 @@
 
 🔗 **Canlı Demo / Live Demo:** http://baun-media.eu-north-1.elasticbeanstalk.com/
 
+### 🔑 Demo Hesapları / Demo Accounts
+
+Giriş yapmak için **Öğrenci No** ve **Şifre** kullanın. / Sign in with **Student No** and **Password**.
+
+| | Kullanıcı Adı / Username | E-posta / Email | Öğrenci No / Student No | Şifre / Password |
+|---|---|---|---|---|
+| 👩 Kullanıcı 1 / User 1 | `demo_ayse` | `demo_ayse@demo.com` | `202411400001` | `DemoKullanici2026!` |
+| 👨 Kullanıcı 2 / User 2 | `demo_mehmet` | `demo_mehmet@demo.com` | `202421400002` | `DemoKullanici2026!` |
+
+> 💡 Mesajlaşma özelliğini denemek için iki hesaba farklı tarayıcılardan (veya biri gizli sekmede) giriş yapabilirsiniz.
+> To try messaging, sign in to both accounts in different browsers (or one in a private window).
+
 ![Giriş sayfası / Sign-in page](screenshots/giris.png)
 ![Ana sayfa / Home page](screenshots/anasayfa.png)
 ![Profil sayfası / Profile page](screenshots/profil.png)
