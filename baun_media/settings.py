@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'baun_media.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'baun_media',
+        'NAME': os.environ["DB_NAME"],
         'USER': os.environ["DB_USER"],
         'PASSWORD': os.environ["DB_PASSWORD"],
         'HOST': 'django-project-db.cfsyoaks0gdj.eu-north-1.rds.amazonaws.com',
