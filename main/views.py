@@ -255,8 +255,7 @@ def dashboard(request, user_slug):
     else:
         button_text = 'Takip Et'
     if request.method == 'POST':
-        if request.FILES.get('image') == None:
-            image = profile.profileimg
+            image = request.FILES.get('image') or profile.profileimg
             job = request.POST['job']
             company_name = request.POST['company_name']
             type_of_work = request.POST['types_work']
@@ -265,13 +264,14 @@ def dashboard(request, user_slug):
             city = request.POST['city']
             phone_number = request.POST['phone_number']
             birthday = request.POST['birthday']
-            
-            # Doğru tarih formatını kontrol etmek ve işlemek için datetime kullanın
-            try:
-                birthday_date = datetime.strptime(birthday, '%d-%m-%Y').date()
-                profile.birthday = birthday_date
-            except ValueError:
-                messages.info(request, "Doğum Gününüz İçin Geçerli Bir Tarih Giriniz!")
+            birthday_error = False
+            if birthday == '':
+                profile.birthday = None
+            else:
+                try:
+                    profile.birthday = datetime.strptime(birthday, '%d-%m-%Y').date()
+                except ValueError:
+                    birthday_error = True
 
             profile.profileimg = image
             profile.job = job
@@ -282,32 +282,11 @@ def dashboard(request, user_slug):
             profile.city = city
             profile.phone_number = phone_number
             profile.save()
-        if request.FILES.get('image') != None:
-            image = request.FILES.get('image')
-            job = request.POST['job']
-            company_name = request.POST['company_name']
-            type_of_work = request.POST['types_work']
-            colloge = request.POST['college']
-            country = request.POST['country']
-            city = request.POST['city']
-            phone_number = request.POST['phone_number']
-            birthday = request.POST['birthday']
-            try:
-                birthday_date = datetime.strptime(birthday, '%d-%m-%Y').date()
-                profile.birthday = birthday_date
-            except ValueError:
-                messages.info(request, "Doğum Gününüz İçin Geçerli Bir Tarih Giriniz!")
-
-            profile.profileimg = image
-            profile.job = job
-            profile.company_name = company_name
-            profile.type_of_work = type_of_work
-            profile.college = colloge
-            profile.country = country
-            profile.city = city
-            profile.phone_number = phone_number
-            profile.save()
-        return redirect('dashboard',user_slug)
+            if birthday_error:
+                messages.error(request, "Diğer bilgileriniz kaydedildi. Doğum günü geçersiz olduğu için değiştirilmedi (GG-AA-YYYY biçiminde yazın, örn. 15-09-2000).")
+            else:
+                messages.success(request, "Profiliniz güncellendi.")
+            return redirect('dashboard',user_slug)
     user_following_list = []
     feed = []
     user_following = Follower.objects.filter(follower=request.user)

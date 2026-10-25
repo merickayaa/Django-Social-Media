@@ -84,6 +84,10 @@
         </div>
       </div>
     </nav>   <!-- NAVBAR END -->
-
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" role="alert">
+        {{message}}
+      </div>
+    {% endfor %}
         {% block content %}
         {% endblock %}

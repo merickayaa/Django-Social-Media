@@ -1,9 +1,6 @@
 {% extends 'partials/_base.html' %}
 {% load static %}
     {% block content %}
-    {% for message in messages %}
-      <h5>{{message}}</h5>
-    {% endfor %}
     <div class="container mt-4">
       <div class="row">
     
@@ -215,11 +212,11 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label li_font">Çalışma Türü</label>
-                  <select id="workSelect" value="{{user_profile.type_of_work}}" name="types_work" class="form-select" aria-label="Default select example">
-                    <option name="o1">Lütfen Seçin</option>
-                    <option name="o2">Uzaktan</option>
-                    <option name="o3">Ofisten</option>
-                    <option name="o4">Hibrit</option>
+                  <select id="workSelect" name="types_work" class="form-select" aria-label="Default select example">
+                    <option value="">Lütfen Seçin</option>
+                    <option value="Uzaktan" {% if user_profile.type_of_work == "Uzaktan" %}selected{% endif %}>Uzaktan</option>
+                    <option value="Ofisten" {% if user_profile.type_of_work == "Ofisten" %}selected{% endif %}>Ofisten</option>
+                    <option value="Hibrit" {% if user_profile.type_of_work == "Hibrit" %}selected{% endif %}>Hibrit</option>
                   </select>
                 </div>
               </div>
@@ -227,11 +224,11 @@
                 <h3 class="p-font">Eğitim</h3>
                 <div class="mb-3">
                   <label class="form-label li_font">Fakülteniz</label>
-                  <select id="collegeSelect" value="{{user_profile.college}}" name="college" class="form-select" aria-label="Default select example">
-                    <option>Lütfen Seçin</option>
-                    <option>Edremit Meslek YüksekOkulu</option>
-                    <option>Altınoluk Meslek YüksekOkulu</option>
-                    <option>Balıkesir Meslek YüksekOkulu</option>
+                  <select id="collegeSelect" name="college" class="form-select" aria-label="Default select example">
+                    <option value="">Lütfen Seçin</option>
+                    <option value="Edremit Meslek YüksekOkulu" {% if user_profile.college == "Edremit Meslek YüksekOkulu" %}selected{% endif %}>Edremit Meslek YüksekOkulu</option>
+                    <option value="Altınoluk Meslek YüksekOkulu" {% if user_profile.college == "Altınoluk Meslek YüksekOkulu" %}selected{% endif %}>Altınoluk Meslek YüksekOkulu</option>
+                    <option value="Balıkesir Meslek YüksekOkulu" {% if user_profile.college == "Balıkesir Meslek YüksekOkulu" %}selected{% endif %}>Balıkesir Meslek YüksekOkulu</option>
                   </select>
                   <div id="SchoolHelp" class="form-text">Örn: Edremit Meslek YüksekOkulu</div>
                 </div>
@@ -336,34 +333,6 @@
         s.classList.remove('bg-primary')
       })
     })
-    $(document).ready(function () {
-        const collegeSelect = $("#collegeSelect");
-        
-        // Önceki seçim varsa, seçimi ayarla
-        let previousSelection = localStorage.getItem("previousSelection");
-        if (previousSelection !== null) {
-            collegeSelect.val(previousSelection);
-        }
-
-        // Kullanıcı yeni bir seçim yaptığında, seçimi sakla
-        collegeSelect.on('change', function () {
-            localStorage.setItem("previousSelection", collegeSelect.val());
-        });
-    });
-    $(document).ready(function () {
-        const workSelect = $("#workSelect");
-        
-        // Önceki seçim varsa, seçimi ayarla
-        let previousSelectionWORK = localStorage.getItem("previousSelectionWORK");
-        if (previousSelectionWORK !== null) {
-          workSelect.val(previousSelectionWORK);
-        }
-
-        // Kullanıcı yeni bir seçim yaptığında, seçimi sakla
-        workSelect.on('change', function () {
-            localStorage.setItem("previousSelectionWORK", workSelect.val());
-        });
-    });
     document.addEventListener('DOMContentLoaded', function(){
       var personal_button = document.querySelector('#Personal_button')
       var posts_button = document.querySelector('#Posts_button')
